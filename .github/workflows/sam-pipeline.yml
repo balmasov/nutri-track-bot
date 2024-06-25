@@ -23,5 +23,5 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: telegramBotHandler
-          handler: nutri-track-bot.LambdaHandler::handleRequest
+          handler: com.nutritrack.bot.LambdaHandler::handleRequest
           zip_file: nutri-track-bot/target/com-1.0.jar
