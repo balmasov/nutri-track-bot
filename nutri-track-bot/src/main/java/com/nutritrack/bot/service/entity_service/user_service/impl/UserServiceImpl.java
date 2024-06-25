@@ -1,9 +1,9 @@
-package com.nutritrack.bot.service.entity.user_service.impl;
+package com.nutritrack.bot.service.entity_service.user_service.impl;
 
 import com.nutritrack.bot.repository.UserRepo;
 import com.nutritrack.bot.repository.model.User;
 import com.nutritrack.bot.repository.model.UserStep;
-import com.nutritrack.bot.service.entity.user_service.UserService;
+import com.nutritrack.bot.service.entity_service.user_service.UserService;
 import com.nutritrack.bot.service.parser.dto.CustomUpdate;
 
 import javax.inject.Inject;

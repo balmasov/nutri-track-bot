@@ -1,11 +1,11 @@
-package com.nutritrack.bot.service.entity.food_service.Impl;
+package com.nutritrack.bot.service.entity_service.food_service.Impl;
 
 
 import com.nutritrack.bot.exception.NoEntityFoundException;
 import com.nutritrack.bot.repository.FoodRepo;
 import com.nutritrack.bot.repository.model.Food;
 import com.nutritrack.bot.repository.model.FoodState;
-import com.nutritrack.bot.service.entity.food_service.FoodService;
+import com.nutritrack.bot.service.entity_service.food_service.FoodService;
 
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;

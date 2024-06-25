@@ -1,13 +1,12 @@
 package com.nutritrack.bot.service.step.impl.cooking;
 
-import com.nutritrack.bot.config.MessageKey;
 import com.nutritrack.bot.exception.WrongInputException;
 import com.nutritrack.bot.repository.model.Food;
 import com.nutritrack.bot.repository.model.FoodState;
 import com.nutritrack.bot.repository.model.User;
 import com.nutritrack.bot.repository.model.UserStep;
-import com.nutritrack.bot.service.entity.food_service.FoodService;
-import com.nutritrack.bot.service.entity.user_service.UserService;
+import com.nutritrack.bot.service.entity_service.food_service.FoodService;
+import com.nutritrack.bot.service.entity_service.user_service.UserService;
 import com.nutritrack.bot.service.keyboard.KeyboardService;
 import com.nutritrack.bot.service.message.MessageService;
 import com.nutritrack.bot.service.parser.dto.CustomUpdate;

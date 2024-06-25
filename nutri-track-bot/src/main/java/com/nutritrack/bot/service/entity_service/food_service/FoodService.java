@@ -1,4 +1,4 @@
-package com.nutritrack.bot.service.entity.food_service;
+package com.nutritrack.bot.service.entity_service.food_service;
 
 import com.nutritrack.bot.repository.model.Food;
 import com.nutritrack.bot.repository.model.FoodState;

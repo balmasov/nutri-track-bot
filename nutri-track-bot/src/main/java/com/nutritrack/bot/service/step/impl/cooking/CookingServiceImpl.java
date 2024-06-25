@@ -2,7 +2,7 @@ package com.nutritrack.bot.service.step.impl.cooking;
 
 import com.nutritrack.bot.repository.model.User;
 import com.nutritrack.bot.repository.model.UserStep;
-import com.nutritrack.bot.service.entity.user_service.UserService;
+import com.nutritrack.bot.service.entity_service.user_service.UserService;
 import com.nutritrack.bot.service.message.MessageService;
 import com.nutritrack.bot.service.parser.dto.CustomUpdate;
 import com.nutritrack.bot.service.step.StepService;

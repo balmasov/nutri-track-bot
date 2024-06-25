@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nutritrack.bot.exception.UnknownMessageType;
-import com.nutritrack.bot.service.entity.user_service.UserService;
+import com.nutritrack.bot.service.entity_service.user_service.UserService;
 import com.nutritrack.bot.service.exception.ExceptionService;
 import com.nutritrack.bot.service.factory.StepFactory;
 import com.nutritrack.bot.service.parser.UpdateParser;

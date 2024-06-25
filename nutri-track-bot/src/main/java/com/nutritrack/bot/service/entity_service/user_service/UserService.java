@@ -1,4 +1,4 @@
-package com.nutritrack.bot.service.entity.user_service;
+package com.nutritrack.bot.service.entity_service.user_service;
 
 import com.nutritrack.bot.repository.model.User;
 import com.nutritrack.bot.repository.model.UserStep;
