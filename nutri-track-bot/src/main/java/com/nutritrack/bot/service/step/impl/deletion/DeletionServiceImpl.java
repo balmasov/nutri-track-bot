@@ -35,7 +35,6 @@ public class DeletionServiceImpl implements StepService, StepState {
         this.userService = userService;
     }
 
-    //TODO cansel command should cansel deletion and return deletion food if user in the deletion process
     @Override
     public SendMessage doStep(User user, CustomUpdate update) {
         if (!update.hasCallbackQuery()) {
@@ -58,14 +57,13 @@ public class DeletionServiceImpl implements StepService, StepState {
         return allFoodWasDeleted(update, user);
     }
 
-    //TODO It is better to change existing message than delete keyboard and sent new keyboard again
+    //TODO It is better to change existing message, than delete keyboard and sent new keyboard again
     private SendMessage deleteFoodItem(CustomUpdate update, String callbackQueryData, User user) {
         Long foodId = NumberExtractHelper.extractLong(callbackQueryData);
 
         String nameOfDeletedFood = foodService.deleteFood(foodId);
         keyboardService.deleteReplyMarkupKeyBoard(update, YOUR_CHOICE_WAS, nameOfDeletedFood);
 
-        //TODO now user can use only cansel command to stop deletion FOOD_WAS_DELETED message
         return foodService.getUsersFood(user.getId())
                 .filter(list -> !list.isEmpty())
                 .map(foods -> keyboardService.createDeletionFoodKeyboard(update, foods, ONE_FOOD_WAS_DELETED, nameOfDeletedFood))

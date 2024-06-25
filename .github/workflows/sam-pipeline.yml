@@ -15,7 +15,7 @@ jobs:
           distribution: 'temurin'
           architecture: x64
       - name: Run the Maven verify phase
-        run: cd balmasov.org && mvn clean package
+        run: cd nutri-track-bot && mvn clean package
       - name: default deploy
         uses: appleboy/lambda-action@v0.1.9
         with:
@@ -24,4 +24,4 @@ jobs:
           aws_region: ${{ secrets.AWS_REGION }}
           function_name: telegramBotHandler
           handler: cch.LambdaHandler::handleRequest
-          zip_file: balmasov.org/target/org-1.0.jar
+          zip_file: nutri-track-bot/target/org-1.0.jar
