@@ -11,7 +11,7 @@ This project is designed to help count calories. It currently has two main funct
 ## Calculate Raw Weight from Cooked Weight:
 **Example:** Bob cooked rice. He started with 150 grams of raw rice, and after cooking, the weight changed to 370 grams. Bob saved this information in NutriTrackBot. Whenever Bob wants to eat, he can use the bot to determine how much cooked rice he needs to consume to match 45 grams of raw rice. (In this case, he needs to take 111 grams of cooked rice)
 
-Now you might be wondering: "Why the hell would Bob count all this?" The short explanation is that calorie counting is most accurate with raw food weights. The long explanation about nutrients and other details is here: [article in english](https://my_article_does_not_exist_yet.com), [article in russian]().
+Now you might be wondering: "Why the hell would Bob count all this?" The short explanation is that calorie counting is most accurate with raw food weights. The long explanation about nutrients and other details is here: [article in english](https://dev.to/ivanbalmasov/why-losing-weight-is-only-possible-with-programming-4ifo), [article in russian](https://habr.com/ru/articles/826814/).
 
 ## How to Launch This Project
 
