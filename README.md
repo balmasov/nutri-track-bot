@@ -1,4 +1,4 @@
-# nutri-track-bot
+# [nutri-track-bot](https://t.me/NutriTrackBot)
 
 This project is designed to help count calories. It currently has two main functions:
 
@@ -11,7 +11,7 @@ This project is designed to help count calories. It currently has two main funct
 ## Calculate Raw Weight from Cooked Weight:
 **Example:** Bob cooked rice. He started with 150 grams of raw rice, and after cooking, the weight changed to 370 grams. Bob saved this information in NutriTrackBot. Whenever Bob wants to eat, he can use the bot to determine how much cooked rice he needs to consume to match 45 grams of raw rice. (In this case, he needs to take 111 grams of cooked rice)
 
-Now you might be wondering: "Why the hell would Bob count all this?" The short explanation is that calorie counting is most accurate with raw food weights. The long explanation about nutrients and other details is here: [I don't have article yet](https://my_article_does_not_exist_yet.com).
+Now you might be wondering: "Why the hell would Bob count all this?" The short explanation is that calorie counting is most accurate with raw food weights. The long explanation about nutrients and other details is here: [article in english](https://my_article_does_not_exist_yet.com), [article in russian]().
 
 ## How to Launch This Project
 
@@ -19,7 +19,7 @@ Now you might be wondering: "Why the hell would Bob count all this?" The short e
 
 **Simple Method: Launch with Docker**
 
-There is no simple method, but you can find the task [github issue](pipa_kaka) and create a Docker Compose description to make launching this project easier!
+There is no simple method, but you can find the task [github issue](https://github.com/balmasov/nutri-track-bot/issues) and create a Docker Compose description to make launching this project easier!
 
 **Detailed Method**
 
