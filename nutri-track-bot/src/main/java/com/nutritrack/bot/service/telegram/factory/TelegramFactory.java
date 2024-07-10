@@ -29,11 +29,15 @@ public class TelegramFactory {
         return new TelegramWebhookBot(token) {
 
             {
-                registerCommands();
+                registerCommands("en");
             }
 
             @Override
             public BotApiMethod onWebhookUpdateReceived(Update update) {
+                if (update.hasMessage() && update.getMessage().getFrom() != null) {
+                    String userLanguage = update.getMessage().getFrom().getLanguageCode();
+                    registerCommands(userLanguage);
+                }
                 return onUpdate.apply(update);
             }
 
@@ -47,11 +51,17 @@ public class TelegramFactory {
                 return path;
             }
 
-            private void registerCommands() {
+            private void registerCommands(String languageCode) {
                 try {
+                    String commandsFile = "commands_en.json";
+
+                    if ("ru".equals(languageCode)) {
+                        commandsFile = "commands_ru.json";
+                    }
+
                     ObjectMapper objectMapper = new ObjectMapper();
                     List<BotCommand> commands = objectMapper.readValue(
-                            getClass().getClassLoader().getResourceAsStream("commands.json"),
+                            getClass().getClassLoader().getResourceAsStream(commandsFile),
                             new TypeReference<>() {});
 
                     SetMyCommands setMyCommands = new SetMyCommands();
