@@ -129,7 +129,7 @@ public class LambdaHandler implements RequestStreamHandler {
                         new TypeReference<>() {});
             } else {
                 commands = objectMapper.readValue(
-                        getClass().getClassLoader().getResourceAsStream("commands.json"),
+                        getClass().getClassLoader().getResourceAsStream("commands_en.json"),
                         new TypeReference<>() {});
             }
 
