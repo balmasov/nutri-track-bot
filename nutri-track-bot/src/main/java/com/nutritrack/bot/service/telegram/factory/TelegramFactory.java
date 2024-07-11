@@ -2,6 +2,7 @@ package com.nutritrack.bot.service.telegram.factory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nutritrack.bot.service.telegram.Language;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -10,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 public class TelegramFactory {
@@ -28,12 +30,10 @@ public class TelegramFactory {
                                                 Function<Update, BotApiMethod> onUpdate) {
         return new TelegramWebhookBot(token) {
 
-            {
-                registerCommands();
-            }
-
             @Override
             public BotApiMethod onWebhookUpdateReceived(Update update) {
+                String languageCode = getLanguageCode(update);
+                registerCommands(languageCode);
                 return onUpdate.apply(update);
             }
 
@@ -47,12 +47,20 @@ public class TelegramFactory {
                 return path;
             }
 
-            private void registerCommands() {
+            private void registerCommands(String languageCode) {
                 try {
                     ObjectMapper objectMapper = new ObjectMapper();
-                    List<BotCommand> commands = objectMapper.readValue(
-                            getClass().getClassLoader().getResourceAsStream("commands.json"),
-                            new TypeReference<>() {});
+                    List<BotCommand> commands;
+
+                    if (Language.RU.getCode().equals(languageCode)) {
+                        commands = objectMapper.readValue(
+                                getClass().getClassLoader().getResourceAsStream("commands_ru.json"),
+                                new TypeReference<>() {});
+                    } else {
+                        commands = objectMapper.readValue(
+                                getClass().getClassLoader().getResourceAsStream("commands.json"),
+                                new TypeReference<>() {});
+                    }
 
                     SetMyCommands setMyCommands = new SetMyCommands();
                     setMyCommands.setCommands(commands);
@@ -61,6 +69,16 @@ public class TelegramFactory {
                 } catch (Exception e) {
                     throw new RuntimeException("Couldn't execute registerCommands method. Exception:\n" + e);
                 }
+            }
+
+            private String getLanguageCode(Update update) {
+                // Пример получения языка из объекта Update
+                if (update.getMessage() != null && update.getMessage().getFrom() != null) {
+                    return update.getMessage().getFrom().getLanguageCode();
+                } else if (update.getCallbackQuery() != null && update.getCallbackQuery().getFrom() != null) {
+                    return update.getCallbackQuery().getFrom().getLanguageCode();
+                }
+                return Locale.getDefault().getLanguage(); // Возвращает язык по умолчанию
             }
         };
     }

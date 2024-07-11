@@ -4,6 +4,7 @@ import com.nutritrack.bot.config.dagger_config.DaggerAppComponent;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.nutritrack.bot.exception.UnknownMessageType;
 import com.nutritrack.bot.service.entity_service.user_service.UserService;
 import com.nutritrack.bot.service.exception.ExceptionService;
@@ -11,9 +12,15 @@ import com.nutritrack.bot.service.factory.StepFactory;
 import com.nutritrack.bot.service.parser.UpdateParser;
 import com.nutritrack.bot.service.parser.dto.CustomUpdate;
 import com.nutritrack.bot.service.telegram.CountCaloriesBot;
+import com.nutritrack.bot.service.telegram.Language;
+import com.nutritrack.bot.service.telegram.factory.TelegramFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.bots.AbsSender;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -22,6 +29,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.nutritrack.bot.config.LogbackConfig.configureLogbackDirectly;
@@ -29,6 +38,7 @@ import static com.nutritrack.bot.config.LogbackConfig.configureLogbackDirectly;
 public class LambdaHandler implements RequestStreamHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(LambdaHandler.class);
+    private static final AbsSender SENDER = TelegramFactory.sender(System.getenv("BOT_TOKEN"), System.getenv("BOT_NAME"));
 
     @Inject
     ObjectMapper objectMapper;
@@ -67,6 +77,9 @@ public class LambdaHandler implements RequestStreamHandler {
         try {
             update = updateParser.parse(new String(input.readAllBytes()));
 
+            String languageCode = getLanguageCode(update);
+            registerCommands(languageCode);
+
             var user = userService.get(update);
 
             var sendMessage = stepFactory.getService(user.getStep())
@@ -95,7 +108,39 @@ public class LambdaHandler implements RequestStreamHandler {
             writer.flush();
         }
 
-        logger.info("Massage ok was written to output");
+        logger.info("Message ok was written to output");
+    }
+
+    private String getLanguageCode(CustomUpdate update) {
+        if (update != null && update.getLocale() != null) {
+            return update.getLocale().getLanguage();
+        }
+        return Locale.getDefault().getLanguage();
+    }
+
+    private void registerCommands(String languageCode) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<BotCommand> commands;
+
+            if (Language.RU.getCode().equals(languageCode)) {
+                commands = objectMapper.readValue(
+                        getClass().getClassLoader().getResourceAsStream("commands_ru.json"),
+                        new TypeReference<>() {});
+            } else {
+                commands = objectMapper.readValue(
+                        getClass().getClassLoader().getResourceAsStream("commands_en.json"),
+                        new TypeReference<>() {});
+            }
+
+            SetMyCommands setMyCommands = SetMyCommands.builder()
+                    .commands(commands)
+                    .languageCode(languageCode)
+                    .build();
+
+            SENDER.execute(setMyCommands);
+        } catch (TelegramApiException | IOException e) {
+            throw new RuntimeException("Couldn't execute registerCommands method. Exception:\n" + e);
+        }
     }
 }
-
