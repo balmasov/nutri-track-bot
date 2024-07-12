@@ -1,7 +1,9 @@
-package com.nutritrack.bot.service.telegram.factory;
+package com.nutritrack.bot.config.dagger_config.module;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dagger.Module;
+import dagger.Provides;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -9,24 +11,21 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
+import javax.inject.Singleton;
 import java.util.List;
 import java.util.function.Function;
 
-public class TelegramFactory {
-    public static AbsSender sender(String token, String username) {
-        return webhookBot(token, username, x -> null);
-    }
+@Module
+public class AbsSenderModule {
 
-    public static TelegramWebhookBot webhookBot(
-            String token, String username, Function<Update, BotApiMethod> onUpdate) {
-        return webhookBot(token, username, username, onUpdate);
-    }
+    private static final String BOT_TOKEN = System.getenv("BOT_TOKEN");
+    private static final String BOT_NAME = System.getenv("BOT_NAME");
+    private static final Function<Update, BotApiMethod> onUpdate = x -> null;
 
-    public static TelegramWebhookBot webhookBot(String token,
-                                                String username,
-                                                String path,
-                                                Function<Update, BotApiMethod> onUpdate) {
-        return new TelegramWebhookBot(token) {
+    @Provides
+    @Singleton
+    AbsSender provideCountCaloriesBot() {
+        return new TelegramWebhookBot(BOT_TOKEN) {
 
             {
                 registerCommands();
@@ -39,12 +38,12 @@ public class TelegramFactory {
 
             @Override
             public String getBotUsername() {
-                return username;
+                return BOT_NAME;
             }
 
             @Override
             public String getBotPath() {
-                return path;
+                return BOT_NAME;
             }
 
             private void registerCommands() {
