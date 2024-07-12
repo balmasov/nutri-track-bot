@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS nutri_bot.foods (
 
 Configure `CCH_PASS`, `CCH_URL`, and `CCH_USER` parameters in the `template.yaml` file. `CCH_URL` should have this form: `jdbc:postgresql://<you_ip>/<your_name>`. If using Docker Desktop, you can find your IP by clicking on your container, then click “Inspect,” then find the `IPAddress` parameter.
 
+![example](nutri-track-bot/src/main/resources/readme-pictures/env-variables.png)
+
 **Build and Run the Project:**
 Ensure SAM and Docker are installed. Open a terminal in your project directory and run the following commands:
 ```sh

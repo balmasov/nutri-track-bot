@@ -24,7 +24,8 @@ import javax.inject.Singleton;
         CommandHandlerModule.class,
         UpdateParserModel.class,
         MessageConfigModel.class,
-        SqlQueriesModule.class
+        SqlQueriesModule.class,
+        AbsSenderModule.class
 })
 public interface AppComponent {
     void inject(LambdaHandler handler);

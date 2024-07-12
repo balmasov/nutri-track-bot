@@ -4,6 +4,7 @@ import com.nutritrack.bot.service.telegram.CountCaloriesBot;
 import com.nutritrack.bot.service.telegram.impl.CountCaloriesBotImpl;
 import dagger.Module;
 import dagger.Provides;
+import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import javax.inject.Singleton;
 
@@ -11,7 +12,7 @@ import javax.inject.Singleton;
 public class BotModule {
     @Provides
     @Singleton
-    CountCaloriesBot provideCountCaloriesBot() {
-        return new CountCaloriesBotImpl();
+    CountCaloriesBot provideCountCaloriesBot(AbsSender sender) {
+        return new CountCaloriesBotImpl(sender);
     }
 }
