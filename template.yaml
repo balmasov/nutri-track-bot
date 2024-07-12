@@ -19,13 +19,6 @@ Resources:
       Architectures:
         - x86_64
       MemorySize: 512
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          CCH_PASS: postgres
-          CCH_URL: jdbc:postgresql://172.17.0.2/cch_helper
-          CCH_USER: postgres
-          BOT_TOKEN: 7174218865:AAFOWA-mG-_Tt0_oiuRO04CAWiH3OwEef54
-          BOT_NAME: PipiSosiska
       Events:
         CountCaloryHelper:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
