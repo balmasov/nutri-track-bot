@@ -11,6 +11,7 @@ import com.nutritrack.bot.service.factory.StepFactory;
 import com.nutritrack.bot.service.parser.UpdateParser;
 import com.nutritrack.bot.service.parser.dto.CustomUpdate;
 import com.nutritrack.bot.service.telegram.CountCaloriesBot;
+import com.nutritrack.bot.service.telegram.factory.TelegramFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -67,6 +68,9 @@ public class LambdaHandler implements RequestStreamHandler {
         try {
             update = updateParser.parse(new String(input.readAllBytes()));
 
+            String languageCode = TelegramFactory.getLanguageCode(update);
+            TelegramFactory.registerCommands(languageCode, bot.getSender());
+
             var user = userService.get(update);
 
             var sendMessage = stepFactory.getService(user.getStep())
@@ -95,7 +99,6 @@ public class LambdaHandler implements RequestStreamHandler {
             writer.flush();
         }
 
-        logger.info("Massage ok was written to output");
+        logger.info("Message ok was written to output");
     }
 }
-

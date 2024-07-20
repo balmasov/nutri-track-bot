@@ -1,0 +1,18 @@
+[
+  {
+    "command": "start",
+    "description": "Starts the bot and send a brief instruction"
+  },
+  {
+    "command": "cancel",
+    "description": " Returns to the main menu"
+  },
+  {
+    "command": "help",
+    "description": "Sends a more detailed instructions"
+  },
+  {
+    "command": "delete",
+    "description": "Choose food you want to delete"
+  }
+]
