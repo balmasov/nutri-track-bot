@@ -1,0 +1,18 @@
+[
+  {
+    "command": "start",
+    "description": "Запускает бота и отправляет краткую инструкцию"
+  },
+  {
+    "command": "cancel",
+    "description": "Возврат в главное меню"
+  },
+  {
+    "command": "help",
+    "description": "Отправляет более подробные инструкции"
+  },
+  {
+    "command": "delete",
+    "description": "Выберите еду, которую хотите удалить"
+  }
+]

@@ -2,6 +2,7 @@ package com.nutritrack.bot.service.telegram.factory;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nutritrack.bot.service.telegram.Language;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
@@ -10,6 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Function;
 
 public class TelegramFactory {
@@ -27,13 +29,10 @@ public class TelegramFactory {
                                                 String path,
                                                 Function<Update, BotApiMethod> onUpdate) {
         return new TelegramWebhookBot(token) {
-
-            {
-                registerCommands();
-            }
-
             @Override
             public BotApiMethod onWebhookUpdateReceived(Update update) {
+                String languageCode = getLanguageCode(update);
+                registerCommands(languageCode, this);
                 return onUpdate.apply(update);
             }
 
@@ -46,22 +45,39 @@ public class TelegramFactory {
             public String getBotPath() {
                 return path;
             }
-
-            private void registerCommands() {
-                try {
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    List<BotCommand> commands = objectMapper.readValue(
-                            getClass().getClassLoader().getResourceAsStream("commands.json"),
-                            new TypeReference<>() {});
-
-                    SetMyCommands setMyCommands = new SetMyCommands();
-                    setMyCommands.setCommands(commands);
-
-                    execute(setMyCommands);
-                } catch (Exception e) {
-                    throw new RuntimeException("Couldn't execute registerCommands method. Exception:\n" + e);
-                }
-            }
         };
+    }
+
+    public static void registerCommands(String languageCode, AbsSender sender) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<BotCommand> commands;
+
+            if (Language.RU.getCode().equals(languageCode)) {
+                commands = objectMapper.readValue(
+                        TelegramFactory.class.getClassLoader().getResourceAsStream("commands_ru.json"),
+                        new TypeReference<>() {});
+            } else {
+                commands = objectMapper.readValue(
+                        TelegramFactory.class.getClassLoader().getResourceAsStream("commands.json"),
+                        new TypeReference<>() {});
+            }
+
+            SetMyCommands setMyCommands = new SetMyCommands();
+            setMyCommands.setCommands(commands);
+
+            sender.execute(setMyCommands);
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't execute registerCommands method. Exception:\n" + e);
+        }
+    }
+
+    public static String getLanguageCode(Update update) {
+        if (update.getMessage() != null && update.getMessage().getFrom() != null) {
+            return update.getMessage().getFrom().getLanguageCode();
+        } else if (update.getCallbackQuery() != null && update.getCallbackQuery().getFrom() != null) {
+            return update.getCallbackQuery().getFrom().getLanguageCode();
+        }
+        return Locale.getDefault().getLanguage();
     }
 }
